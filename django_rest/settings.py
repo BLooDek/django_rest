@@ -41,15 +41,18 @@ INSTALLED_APPS = [
     
     'rest_framework',
     'rest_framework.authtoken',
+    'dj_rest_auth',
     'django.contrib.sites',
     'allauth',
     'allauth.account',
     'dj_rest_auth.registration',
+'corsheaders',
 ]
 
 SITE_ID = 1
 
 MIDDLEWARE = [
+'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -151,9 +154,10 @@ AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend"
 )
-
+AUTH_USER_MODEL = 'user_api.User'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_SESSION_REMEMBER = True
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_UNIQUE_EMAIL = True  # Rest Framework config. Add all of this.
@@ -162,3 +166,7 @@ ACCOUNT_EMAIL_VERIFICATION = "none"
 REST_AUTH_SERIALIZERS = {
     'USER_DETAILS_SERIALIZER': 'user_api.serializers.UserSerializer',
 }
+
+# REST_AUTH_REGISTER_SERIALIZERS = {
+#     "REGISTER_SERIALIZER": 'user_api.serializers.CustomRegisterSerializer',
+# }
