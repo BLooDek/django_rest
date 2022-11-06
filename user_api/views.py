@@ -12,6 +12,7 @@ from user_api.models import User
 @permission_classes((permissions.AllowAny,))
 def user_exist(request, email):
     if User.objects.filter(email=email).exists():
-        return Response(status=status.HTTP_418_IM_A_TEAPOT)
-    return Response(status=status.HTTP_200_OK)
+        return Response({'detail': 'true'}, status=status.HTTP_200_OK)
+        # return Response(status=status.HTTP_418_IM_A_TEAPOT)
+    return Response({'detail': 'false'}, status=status.HTTP_200_OK)
 
