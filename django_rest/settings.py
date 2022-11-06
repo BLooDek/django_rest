@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # local
     'user_api',
+    'notes_api',
 
     'rest_framework',
     'rest_framework.authtoken',
