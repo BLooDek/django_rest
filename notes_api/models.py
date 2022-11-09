@@ -13,7 +13,7 @@ class Note(models.Model):
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, unique=False)
 
     class Meta:
-        ordering = ['-created_at']
+        ordering = ['-updated_at']
 
     def __str__(self):
         return self.title

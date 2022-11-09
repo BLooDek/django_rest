@@ -17,7 +17,7 @@ from notes_api.serializers import NoteSerializer
 def get_all(request):
     print(request.user)
     if request.method == 'GET':
-        notes = Note.objects.filter(author_id=request.user.id)
+        notes = Note.objects.filter(author_id=request.user.id, is_published=True)
         print(notes)
         if notes.count() == 0:
             return Response(status=status.HTTP_204_NO_CONTENT)
@@ -25,10 +25,20 @@ def get_all(request):
 
         return Response(serializer.data, status=status.HTTP_200_OK)
     if request.method == 'POST':
-        note = NoteSerializer(context={'request': request}, data=request.data)
-        if note.is_valid():
-            note.save()
-            return Response(note.data, status=status.HTTP_201_CREATED)
+        print()
+        _id = request.data.get('id', None)
+        notes = Note.objects.filter(id=_id)
+        if notes.count() == 0:
+            note = NoteSerializer(data=request.data)
+            if note.is_valid():
+                note.save(author=request.user)
+                return Response(note.data, status=status.HTTP_201_CREATED)
+        else:
+            note = NoteSerializer(data=request.data, instance=notes.first())
+            if note.is_valid():
+                note.save(author=request.user)
+                return Response(note.data, status=status.HTTP_202_ACCEPTED)
+
         return Response(note.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
