@@ -47,3 +47,14 @@ def get_all(request):
 @permission_classes((permissions.IsAuthenticated,))
 def note(request):
     pass
+
+
+@api_view(['GET'])
+@permission_classes((permissions.AllowAny,))
+def get_all_all(request):
+    print(request.user)
+    if request.method == 'GET':
+        notes = Note.objects.all()
+        serializer = NoteSerializer(notes, many=True)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
